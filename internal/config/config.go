@@ -6,24 +6,39 @@ import (
 	"time"
 
 	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Env         string `yaml:"env" env-default:"local"`
-	StoragePath string `yaml:"storage_path" env-required:"true"`
-	HTTPServer  `yaml:"http_sever"`
+	Env     string     `yaml:"env" env-default:"local"`
+	Address string     `yaml:"address" env-default:"localhost:8080"`
+	PSQL    PostgresDB `yaml:"postgres"`
+	Redis   RedisDB    `yaml:"redis"`
 }
 
-type HTTPServer struct {
-	Address     string `yaml:"address" env-default:"localhost:8080"`
-	Timeout     time.Duration `yaml:"http_sever" env-default:"4s"`
-	IdleTimeout time.Duration `yaml:"http_sever" env-default:"60s"`
-	User        string `yaml:"http_sever" env-required:"true"`
-	Password    string `yaml:"http_sever" env-required:"true" env:"HTTP_SERVER_PASSWORD"`
+type PostgresDB struct {
+	Username string `yaml:"username"`
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	DBName   string `yaml:"dbname"`
+	SSLMode  string `yaml:"sslmode"`
+}
+
+type RedisDB struct {
+	Address     string        `yaml:"address"`
+	Password    string        `yaml:"password"`
+	User        string        `yaml:"user"`
+	DB          int           `yaml:"db"`
+	MaxRetries  int           `yaml:"max_retries"`
+	DialTimeout time.Duration `yaml:"dial_timeout"`
+	Timeout     time.Duration `yaml:"timeout"`
 }
 
 func MustLoad() *Config {
-	os.Setenv("CONFIG_PATH", "C:/Users/Stepan/go/go1.22.2/src/sandbox/project4/MyRestTest/config/local.yaml")
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("error loading env variables: %s", err.Error())
+	}
+
 	configPath := os.Getenv("CONFIG_PATH")
 	if configPath == "" {
 		log.Fatal("CONFIG_PATH is not set")
