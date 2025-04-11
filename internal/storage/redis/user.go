@@ -16,7 +16,7 @@ func (rs *RedisStorage) Get(name string) error {
 }
 
 func (rs *RedisStorage) NewCard(user models.Card) error {
-	if err := rs.client.Set(context.Background(), user.Name, user.Data, 30 * time.Second).Err(); err != nil {
+	if err := rs.client.Set(context.Background(), user.Name, user.Data, 1*time.Minute).Err(); err != nil {
 		return err
 	}
 

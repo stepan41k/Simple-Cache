@@ -12,7 +12,7 @@ type RedisStorage struct {
 	client *redis.Client
 }
 
-func New(ctx context.Context, cfg config.RedisDB) (*redis.Client, error) {
+func New(ctx context.Context, cfg config.RedisDB) (*RedisStorage, error) {
 	const op = "storage.redis.New"
 
 	db := redis.NewClient(&redis.Options{
@@ -30,5 +30,7 @@ func New(ctx context.Context, cfg config.RedisDB) (*redis.Client, error) {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	return db, nil
+	return &RedisStorage{
+		client: db,
+	}, nil
 }

@@ -10,10 +10,12 @@ import (
 )
 
 type Config struct {
-	Env     string     `yaml:"env" env-default:"local"`
-	Address string     `yaml:"address" env-default:"localhost:8080"`
-	PSQL    PostgresDB `yaml:"postgres"`
-	Redis   RedisDB    `yaml:"redis"`
+	Env         string     `yaml:"env" env-default:"local"`
+	Port     string     `yaml:"address" env-default:"localhost:8080"`
+	Timeout     time.Duration     `yaml:"timeout"`
+	IdleTimeout time.Duration     `yaml:"idle_timeout"`
+	PSQL        PostgresDB `yaml:"postgres"`
+	Redis       RedisDB    `yaml:"redis"`
 }
 
 type PostgresDB struct {

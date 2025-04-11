@@ -7,7 +7,7 @@ import (
 	"github.com/stepan41k/MyRest/internal/domain/models"
 )
 
-func (s *Storage) NewUser(user models.User) (models.Card, error)  {
+func (s *Storage) CreateUser(user models.User) (models.Card, error)  {
 	const op = "storage.postgres.NewUser"
 
 	row := s.pool.QueryRow(context.Background(), `
